@@ -1,0 +1,135 @@
+import java.util.Scanner;
+
+public class UserInterface {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the Car Details");
+        String input = sc.nextLine();
+
+        CarInfo car = extractDetails(input);
+
+        if (car == null) {
+            System.out.println("Invalid Details");
+            return;
+        }
+
+        String availability = car.checkAvailability();
+
+        if (availability.equals("Not Available")) {
+            System.out.println("Invalid Details");
+        } else {
+            System.out.println("Car Id : " + car.getCarId());
+            System.out.println("Car Name : " + car.getCarName());
+            System.out.println("Car Type : " + car.getCarType());
+            System.out.println("City : " + car.getCity());
+            System.out.println(availability);
+        }
+    }
+
+    public static CarInfo extractDetails(String carDetails) {
+        String[] parts = carDetails.split(":");
+        if (parts.length != 4) {
+            return null;
+        }
+        return new CarInfo(parts[0], parts[1], parts[2], parts[3]);
+    }
+}
+
+class CarInfo {
+    private String carId;
+    private String carName;
+    private String carType;
+    private String city;
+
+    public CarInfo(String carId, String carName, String carType, String city) {
+        this.carId = carId;
+        this.carName = carName;
+        this.carType = carType;
+        this.city = city;
+    }
+
+    public String getCarId() {
+        return carId;
+    }
+
+    public String getCarName() {
+        return carName;
+    }
+
+    public String getCarType() {
+        return carType;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String checkAvailability() {
+        String[] validNames = {"Nissan", "Ford"};
+        String[] validCities = {"Newyork", "denver", "losangels"};
+        String[] validTypes = {"Sedan", "SUV", "MUV"};
+
+        boolean validName = false, validCity = false, validType = false;
+
+        for (String name : validNames) {
+            if (carName.equalsIgnoreCase(name)) {
+                validName = true;
+                break;
+            }
+        }
+        for (String ct : validTypes) {
+            if (carType.equalsIgnoreCase(ct)) {
+                validType = true;
+                break;
+            }
+        }
+        for (String c : validCities) {
+            if (city.equalsIgnoreCase(c)) {
+                validCity = true;
+                break;
+            }
+        }
+
+        if (!validName || !validType || !validCity) {
+            return "Not Available";
+        }
+
+        String availableCar = "";
+        double price = 0.0;
+if (carName.equalsIgnoreCase("Nissan")) {
+    switch (carType.toLowerCase()) {
+        case "sedan":
+            availableCar = "Kicks";
+            price = 8400.0;
+            break;
+        case "suv":
+            availableCar = "Magnite";
+            price = 10800.0;
+            break;
+        case "muv":
+            availableCar = "Terrano";
+            price = 14400.0;
+            break;
+    }
+} else if (carName.equalsIgnoreCase("Ford")) {
+    switch (carType.toLowerCase()) {
+        case "sedan":
+            availableCar = "Figo";
+            price = 4802.0;
+            break;
+        case "suv":
+            availableCar = "Eco Sport";
+            price = 9605.0;
+            break;
+        case "muv":
+            availableCar = "Endeavour";
+            price = 21600.0;
+            break;
+    }
+}
+
+
+        return "Available car and price is: " + availableCar + " and $" + price;
+    }
+}
